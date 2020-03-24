@@ -13,7 +13,7 @@
 
 using namespace std;
 
-
+// ce fichier est le fichier principal, il decrit les menus et actions sur la liste de tâches
 
 
 class Editor{
@@ -212,6 +212,7 @@ class Editor{
         cout<<"1 - Nouvelle liste de tâches"<<endl;
         cout<<"2 - Ouvrir une liste de tâches"<<endl;
         cout<<"q - Quitter"<<endl;
+        cout<<endl<<"     ----     "<<endl;
 
         string rep;
         cin>>rep;
@@ -251,6 +252,7 @@ class Editor{
         cout<<"3 - modifier"<<endl;
         cout<<"4 - Sauvegarder"<<endl;
         cout<<"Q - quitter"<<endl;
+        cout<<endl<<"     ----  "<<endl;
 
         string rep;
         cin>>rep;
@@ -267,7 +269,7 @@ class Editor{
         }
         if(rep=="4"){
             save();
-            menu();
+            menu_liste();
         }
 
         if (rep=="q" or rep=="Q"){
@@ -276,6 +278,139 @@ class Editor{
         }
     }
     
+    
+    void menu_modifier(string ntask){
+
+        cout<<"----------------Elément à modifier ------------"<<endl;
+        cout<<"1 - Nom"<<endl;
+        cout<<"2 - Date de fin"<<endl;
+        cout<<"3 - Priorité"<<endl;
+        cout<<"4 - Ajouter un commentaire"<<endl;
+        cout<<"5 - Description"<<endl;
+        cout<<"Q - Menu"<<endl;
+
+        cout<<ntask<<endl;
+
+        string newres;
+        int n;
+        n=stoi(ntask);
+        Task* pt = tab[n-1]; //pointeur qui pointe vers la tâche à modifier
+        cin>>newres;
+        cout<<endl;
+        string rep;
+
+        if (newres=="1"){
+            cout<<"nouveau nom :"<<endl;
+            cin.ignore();
+            getline(cin,rep);
+            cout<<endl;
+            pt-> change_name(rep);
+            cout<<"le nom de la tâche a été changé"<<endl;
+            menu_modifier(ntask);
+
+        }
+
+        else if (newres=="2"){
+            cout<<"nouvelle date de fin :"<<endl;
+            cin.ignore();
+
+            getline(cin,rep);
+            cout<<endl;
+            pt-> change_df(rep);
+            menu_modifier(ntask);
+
+        }
+
+        else if (newres=="3"){
+            cout<<"changement de priorité"<<endl;
+            cout<<"----------------Priorité ------------"<<endl;
+            cout<<"1 - Normale"<<endl;
+            cout<<"2 - Prioritaire"<<endl;
+            cout<<"Q - Retour"<<endl;
+
+            cin.ignore();
+
+            getline(cin,rep);
+            
+            if (rep=="1"){
+                pt->change_prio("normale");
+
+            }
+
+            else if(rep=="2"){
+                pt->change_prio("prioritaire");
+            }
+            else if(rep=="q" or rep=="Q"){
+                menu_modifier(ntask);
+            }
+            else{
+                cout<<"erreur"<<endl;
+                menu_modifier(ntask);
+            }
+            
+            cout<<"la priorité a été changée"<<endl;
+            menu_modifier(ntask);
+        }
+
+        else if (newres=="4"){
+            cout<<"Commentaires à ajouter : "<<endl;
+            cin.ignore();
+
+            getline(cin,rep);
+
+            pt->commentaire("-" + rep);
+            menu_modifier(ntask);
+        }
+
+        
+
+        else if (newres=="5"){
+            cout<<"------Menu - Description--------"<<endl;
+            cout<<"1 - ajout de descriptions"<<endl;
+            cout<<"2 - remplacer la description"<<endl;
+            cout<<"Q - Retour"<<endl;
+            
+            cin.ignore();
+
+            getline(cin,rep);
+            
+
+            if (rep=="1"){
+                cout<<"description à ajouter : "<<endl;
+                cin.ignore();
+                getline(cin,rep);
+                pt->description('a',"\n"+ rep);
+                menu_modifier(ntask);
+            }
+
+            else if (rep=="2"){
+                cout<<"nouvelle description : "<<endl;
+                cin.ignore();
+                getline(cin,rep);
+                pt->description('w',rep);
+                menu_modifier(ntask);}
+
+            else if(rep=="q" or rep=="Q"){
+                menu_modifier(ntask);
+            }
+            else{
+                cout<<"erreur"<<endl;
+                menu_modifier(ntask);
+            }
+
+        }
+
+        else if (newres=="Q" or newres=="q"){
+            menu_liste();
+        }
+
+        else{
+            cout<<"erreur"<<endl;
+            menu_modifier(ntask);
+        }
+
+    }
+
     void modifier(){
         cout<< "---------------Tâche à modifier--------------"<<endl;
         int n=tab.size();
@@ -283,28 +418,11 @@ class Editor{
             cout<<i+1<<" - "<<tab[i]->get_name()<<endl;
         }
         string res;
-        getline(cin,res);
-        int ntask;
-        ntask=stoi(res);
-
-        cout<<"----------------Elément à modifier ------------"<<endl;
-        cout<<"1 - Nom"<<endl;
-        cout<<"2 - Date de fin"<<endl;
-        cout<<"3 - Priorité"<<endl;
-        cout<<"4 - Description"<<endl;
-        cout<<"5 - Commentaire"<<endl;
-        cout<<"Q - Menu"<<endl;
-
-        string newres;
-
-        if (res=="1"){
-            cout<<"nouveau nom"<<endl;
-            getline(cin,newres);
-            
-
-        }
-
-    }
+        cin>>res;
+        
+         //numéro de la tâche à modifier, on la passe en argument de la fonction suivante
+        menu_modifier(res);
+    }   
 
 
 };

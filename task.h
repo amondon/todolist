@@ -52,7 +52,7 @@ class Task{
 
         cout<<"nouvelle tache ajoutée"<<endl;}
 
-    Task(const Task& t){
+    Task(const Task& t){ //constructeur de copie (sert pour le cas pù l'on a des sous-tâches, la copie n'est alors pas immédiate)
         name=t.name;
         ID=t.ID;
         dc=t.dc;
@@ -65,9 +65,9 @@ class Task{
 
     }
 
-    void afficher(){
+    void afficher(){ // affichage d'une tache dans le terminal
         cout<<endl<<endl;
-        cout<<"affichage :"<<endl;
+        
         cout<<"Nom : "<<name<<endl;
         cout<<"Description : "<<des<<endl;
         cout<<"Identifiant : "<<ID<<endl;
@@ -77,6 +77,7 @@ class Task{
         cout<<"Date de création : "<<dc<<endl;
         cout<<"Date de fin : "<<df<<endl;
         cout<<"Commentaires : "<<com<<endl<<endl<<endl;
+        cout<<"      ----      "<<endl;
 
         /*if (is_st==0){//s'affiche uniquement si l'on a une tache primaire
             cout<<"\t --- SOUS-TACHES --- "<<endl;
@@ -92,7 +93,7 @@ class Task{
         
 
 
-    string save(){
+    string save(){ //créer une chaine de caractère au bon format pour être sauvegarder dans un fichier texte
         string x;
         x=name+"\n"+des+"\n"+"\n"+to_string(ID)+"\n"+to_string(a_st)+"\n"+to_string(avan)+"\n"+prio+"\n"+status+"\n"+dc+"\n"+df+"\n"+com+"\n";
         return x;
@@ -100,7 +101,7 @@ class Task{
     
         
         
-    
+    // les méthodes ci-dessous permettent la modification et la lecture des attributs
 
    
 
@@ -151,7 +152,7 @@ class Task{
     }   
 
     void commentaire (string c){
-        com=com+c;
+        com=com+"\n"+c;
         cout<<"Commentaires : "<<com<<endl;
 
     }
@@ -169,6 +170,26 @@ class Task{
         cout<<"nouvelle sous_tâche ajoutée"<<endl;
 
     }*/
+
+    void change_name (string new_name){
+        name=new_name;
+    }
+
+    void change_df (string new_df){
+        if (new_df[2]=='/' and new_df[5]=='/'){
+            df=new_df;
+            cout<<"la date de fin a été changée"<<endl;
+            
+            }
+        else { 
+            cout<<"date de fin de tâche au mauvais format"<<endl;
+            }
+    }
+
+    void change_prio(string new_prio){
+        prio=new_prio;
+    }
+    
 
 
 };

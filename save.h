@@ -12,7 +12,7 @@ using namespace std;
 
 
 
-vector<Task*> get_data(string adress){
+vector<Task*> get_data(string adress){ // lecture d'un fichier de sauvegarde en un tableau qui sera lu par l'editeur
 
     vector<Task*> vect;
 
@@ -113,7 +113,7 @@ vector<Task*> get_data(string adress){
     
 }
 
-void save_data( vector<Task*> vect, string adress){
+void save_data( vector<Task*> vect, string adress){ // fait le processus inverse, à partir d'une liste de taches sauvegarde dans un fichier texte
     ofstream data{adress};
     int n= vect.size();
     

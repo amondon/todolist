@@ -12,21 +12,9 @@ using namespace std;
 
 
 int main() {
+
+    Editor liste{};    //lancement de l'éditeur
     
-    /*Editor liste("data.txt");
-
-    liste.afficher();
-
-    liste.ajout();
-
-    liste.save();*/
-
-    Editor liste{};    
-    
-    //cout<<get_time();
- 
-
-
     
     return 0;
 }
