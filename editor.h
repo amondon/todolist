@@ -17,7 +17,7 @@ using namespace std;
 
 
 class Editor{
-    //prend un fichier et lis les données pour avoir une liste de taches
+    //prend un fichier et lit les données pour avoir une liste de taches
     //on pourra ajouter a cette éditeur des taches, les modifier ...
 
     private :
@@ -60,18 +60,81 @@ class Editor{
 
 
     void afficher(){
+        cout<<"-------------- LISTE DES TACHES -----------------"<<endl;
         int n=tab.size();
-
+        int ID;
+        int avantp;
+        int avanst;
         for(int i=0;i<n;i++){
-            tab[i]->afficher();
+            int k;
+            
+            k=tab[i]->is_st(); // permet de n'afficher que les tâches primaires (les tâches secondaires sont affichées avce leur tache associée)
+            if(k==0){
+                ID=tab[i]->get_ID();
+                
+                avantp=tab[i]->get_avancement();
+                
+                if(avantp==100){
+
+                    cout<<i<<" - "<<tab[i]->get_name()<<"\t (fait)"<<endl;
+                }
+                else{
+                    cout<<i<<" - "<<tab[i]->get_name()<<endl;
+                }
+                
+                for (int j=0;j<n;j++){
+                    if (tab[j]->st_de(ID)){
+                        avanst=tab[j]->get_avancement();
+                        
+                        if(avanst==100){
+                            cout<<"\t - "<<tab[j]->get_name()<<"\t (fait)"<<endl;
+                        }
+                        else{
+                            cout<<"\t - "<<tab[j]->get_name()<<endl;
+                        }
+                    }
+                }
+            }
         }
-    }
+        cout<<endl<<"--------------------------------"<<endl;
+        cout<<" - tâche en cours"<<endl;
+        cout<<" x tache effectuée"<<endl;
+        cout<<"--------------------------------"<<endl;
+        cout<<"taper le numéro d'un tâche pour avoir plus d'informations"<<endl;
+        cout<<"Q ou q pour quitter"<<endl;
+
+        string reponse;
+
+        //cin.ignore();
+        getline(cin,reponse);
+
+        if(reponse=="q" or reponse=="Q"){
+            menu_liste();
+        }
+        else{
+            for (int i=0;i<n;i++){
+                if(reponse==to_string(i)){
+                    // il faut que ca n'affiche que si c'est une tâche primaire
+                    if (tab[i]->is_st()==0){
+                        tab[i]->afficher(tab);
+                    }
+                    
+                    
+                }
+            }
+            afficher();
+        } 
+            
+        }
+    
+
+    
 
     void save(){
         save_data(tab,adress);
     }
 
-    void ajout(){
+    void ajout(){ //n indique si on créer une tâche ou une sous tâche
 
         string name;
         string des;
@@ -81,16 +144,17 @@ class Editor{
         int avan;
         string prio;
         string com;
-        int a_st;
+        int a_st=0;
+        int ID_st=0;
         
-        int ID=0; //On cherche un ID qui est disponible
+        int ID=1; //On cherche un ID qui est disponible
         
         int flag=1;
         int flag2=1;
-        int n=IDs.size();
+        int m=IDs.size();
         while(flag){
             int i=0;
-            while(i<n){
+            while(i<m){
                 if (IDs[i]==ID){
                     flag2=0;}
                 i++;}
@@ -102,6 +166,8 @@ class Editor{
                 }
 
         }//ID est maintenant trouvé
+
+        IDs.push_back(ID); //dans le cas d'une sous tâche pour ne pas qu'elle ait le même id
 
         cout<<"Nom :"<<endl;
         cin.ignore();
@@ -166,46 +232,179 @@ class Editor{
         cout<<"Commentaires :";
         
         getline(cin,com);
+        
+        
+        dc=get_time();
+        status="ouverte";
 
-        int flag4=1;
+        Task* pt = new Task{name,dc,df,a_st,ID_st,0,des,prio,ID};
+        pt->commentaire(com);
+        tab.push_back(pt);
+        cout<<"nouvelle tâche ajoutée à la liste"<<endl;
+
+        menu_sous_tache(ID);
+
+    }
+
+        
+    void menu_sous_tache(int ID) {
         string rst;
-        while(flag4){ //tant qu'il n'y a pas de bonne réponse on recommence
-            cout<<"Ajouter une sous-tâche ?"<<endl;
+        
+        cout<<endl<<"Ajouter une sous-tâche ?"<<endl;
+        //cout<<"l'id de la tâche primaire est :"<<ID<<endl;
+        cout<<"1 - Oui"<<endl;
+        cout<<"2 - Non"<<endl;
+        
+        getline(cin,rst);
+        if(rst=="1"){//on veut créer des sous-taches : il faut faire apparaitre un nouveau menu qui permet d'en créer un
+            ajout_sous_tache(ID);
+            }
+        else{
+            menu_liste();
+        }
+              
+    }
+
+
+    void ajout_sous_tache(int id_tache_primaire){ //n indique si on créer une tâche ou une sous tâche
+
+        string name;
+        string des;
+        string dc;
+        string df;
+        string status;
+        int avan;
+        string prio;
+        string com;
+        int a_st=1;
+        int ID_st=id_tache_primaire; //car on a une sous-tâche
+        
+        int ID=1; //On cherche un ID qui est disponible
+        
+        int flag=1;
+        int flag2=1;
+        int m=IDs.size();
+        while(flag){
+            int i=0;
+            while(i<m){
+                if (IDs[i]==ID){
+                    flag2=0;}
+                i++;}
+            if (flag2==0){//c'est que l'ID appartient déja à la liste
+                ID++;
+                flag2=1;}
+            else {
+                flag=0; //c'est que l'ID n'est pas dans la liste, on peut donc sortir de la boucle
+                }
+
+        }//ID est maintenant trouvé
+
+        IDs.push_back(ID); //dans le cas d'une sous tâche pour ne pas qu'elle ait le même id
+
+        cout<<"Nom :"<<endl;
+        //cin.ignore();
+        getline(cin,name);
+
+        cout<<"Description :"<<endl;
+        
+        getline(cin,des);
+
+        string rprio;
+        int flag3=1;
+        while(flag3){ //tant qu'il n'y a pas de bonne réponse on recommence
+            cout<<"Priorité :"<<endl;
+            cout<<"1 - Normal"<<endl;
+            cout<<"2 - Prioritaire"<<endl;
             cout<<"q - annuler"<<endl;
-            cout<<"1 - Oui"<<endl;
-            cout<<"2 - Non"<<endl;
             
             
             
-            getline(cin,rst);
-            if(rst=="1"){//on veut créer des sous-taches : il faut faire apparaitre un nouveau menu qui permet d'en créer un
-                a_st=1;
-                //ajout_sous_tache(); // a coder
+            getline(cin,rprio);
+            if(rprio=="1"){
+                prio="Normal";
+                flag3=0;
             }
-            else if (rst=="2"){
-                a_st=0;
-                flag4=0;
+            else if (rprio=="2"){
+                prio="Prioritaire";
+                flag3=0;
             }
-            else if (rst=="q"){
+            else if (rprio=="q"){
                 menu_liste();
             }
 
             else {
                 cout<<"Erreur"<<endl;
             }
+
         }
+
+        string rdf;
+        int flag5=1;
+        while(flag5){ //tant qu'il n'y a pas de bonne réponse on recommence
+            cout<<"Date limite avant la fin de la tâche ?"<<endl;
+            cout<<"(au format JJ/MM/AAAA)"<<endl;
+            cout<<"q - annuler"<<endl;
+            
+            
+            getline(cin,rdf);
+            if(rdf=="q"){
+                menu_liste();
+            }
+            
+            else if (rdf[2]=='/' && rdf[5]=='/'){//la date est au bon format
+                df=rdf;
+                flag5=0;
+            }
+            
+            else {
+                cout<<"Erreur"<<endl;
+            }
+        }
+
+        cout<<"Commentaires :";
+        
+        getline(cin,com);
+        
         
         dc=get_time();
         status="ouverte";
 
-        Task* pt = new Task{name,dc,df,a_st,des,prio,ID};
+        Task* pt = new Task{name,dc,df,a_st,ID_st,0,des,prio,ID};
         pt->commentaire(com);
         tab.push_back(pt);
-        cout<<"nouvelle tâche ajoutée à la liste"<<endl;
-        menu_liste();
+        cout<<"nouvelle sous-tâche ajoutée à la liste"<<endl;
 
+        menu_sous_tache(id_tache_primaire);
     }
 
+    void menu_valider(){
+        cout<< "---------------Avancement--------------"<<endl;
+        
+        int n=tab.size();
+        for (int i=0;i<n;i++){
+            int k = tab[i]->is_st();
+            if(k==0){
+                cout<<i<<" - "<<tab[i]->get_name()<<" : "<<tab[i]->get_avancement()<<"%"<<endl;
+            }
+            
+        }
+        cout<<"---------------------------------------------"<<endl;
+        cout<<"taper le numéro de la tâche pour modifier son avancement"<<endl;
+
+        string res;
+        cin>>res;
+        
+        valider(res);
+    }
+
+
+    void valider(string res){
+        vector <int> st;
+        int n=tab.size();
+        for (int i=0;i<n;i++){
+            
+        }
+    }
 
     void menu(){
         cout<<"----------- Menu-------------"<<endl<<endl;
@@ -250,7 +449,8 @@ class Editor{
         cout<<"1 - ajouter tâche"<<endl;
         cout<<"2 - liste des tâches"<<endl;
         cout<<"3 - modifier"<<endl;
-        cout<<"4 - Sauvegarder"<<endl;
+        cout<<"4 - valider une tâche"<<endl;
+        cout<<"5 - Sauvegarder"<<endl;
         cout<<"Q - quitter"<<endl;
         cout<<endl<<"     ----  "<<endl;
 
@@ -262,12 +462,16 @@ class Editor{
         }
         if(rep=="2"){
             afficher();
+            
             menu_liste();
         }
         if(rep=="3"){
             modifier();
         }
         if(rep=="4"){
+            menu_valider();
+        }
+        if(rep=="5"){
             save();
             menu_liste();
         }

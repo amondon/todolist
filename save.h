@@ -28,6 +28,7 @@ vector<Task*> get_data(string adress){ // lecture d'un fichier de sauvegarde en 
         string des{};
         int ID;
         int a_st;
+        int ID_st;
         int avan;
         string name;
         string status;
@@ -53,6 +54,10 @@ vector<Task*> get_data(string adress){ // lecture d'un fichier de sauvegarde en 
 
         getline(data,ligne);
         a_st=stoi(ligne);
+
+        getline(data,ligne);
+        ID_st=stoi(ligne);
+
 
         getline(data,ligne);
         avan=stoi(ligne);
@@ -91,7 +96,7 @@ vector<Task*> get_data(string adress){ // lecture d'un fichier de sauvegarde en 
 
         // forme constructor Task(string n,string datec ,string datef,int s =0,string d="",string p="normale",ID=0)
         
-        Task* t = new Task {name,dc,df,a_st,des,prio,ID};
+        Task* t = new Task {name,dc,df,a_st,ID_st,avan,des,prio,ID};
           
         t->commentaire(com);
         

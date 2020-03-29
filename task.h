@@ -7,6 +7,7 @@
 #include<string>
 #include<vector>
 
+
 using namespace std;
 
 class Task{
@@ -20,14 +21,14 @@ class Task{
         int avan {};
         string prio{};
         string com{};
-        //vector<Task*> st {nullptr}; //tableau qui contient une liste de pointeurs qui chacun pointe vers une tâche qui est une sous-tâche
-        //int sth{};//on est a quelle sous tache dans le tableau (pour pouvoir en ajouter une)
-        int a_st{};//permet de savoir si notre tache est une sous-tache ou une tache primaire 0=tache, 1=sous-tache
-        //int ID_st; //permet de savoir une tache est sous-tâche de quelle tâche
+        
+        //gestion des sous-tâches
+        int a_st{};//permet de savoir si notre tache est une sous-tache d'une autre tache 0=tache, 1=sous-tache
+        int ID_st;//ID de la tâche primaire associée
     public :
 
     Task(){}
-    Task(string n,string datec ,string datef,int s =0,string d="",string p="normale",int i=0):name(n),des(d),prio(p),a_st(s),ID(i){
+    Task(string n,string datec ,string datef,int s =0,int id_st=0,int avancement=0,string d="",string p="normale",int i=0):name(n),des(d),prio(p),a_st(s),ID_st(id_st),ID(i),avan(avancement){
         
         //on vérifie que les dates soient au bon format
 
@@ -45,14 +46,12 @@ class Task{
             cout<<"date de fin de tâche au mauvais format"<<endl;}
         
         status="ouverte";
-        avan=0;
         
         
-        //sth=0;
+        //cout<<"nouvelle tache ajoutée"<<endl;
+        }
 
-        cout<<"nouvelle tache ajoutée"<<endl;}
-
-    Task(const Task& t){ //constructeur de copie (sert pour le cas pù l'on a des sous-tâches, la copie n'est alors pas immédiate)
+    /*Task(const Task& t){ //constructeur de copie (sert pour le cas pù l'on a des sous-tâches, la copie n'est alors pas immédiate)
         name=t.name;
         ID=t.ID;
         dc=t.dc;
@@ -62,40 +61,57 @@ class Task{
         prio=t.prio;
         com=t.com;
         a_st=t.a_st;
+        int n=st.size();
+        for (int i=0;i<n;i++){
+            t.st[i]=st[i]
+        }
 
-    }
+    }*/
 
-    void afficher(){ // affichage d'une tache dans le terminal
+    void afficher( vector <Task*> tab){ // affichage d'une tache dans le terminal
         cout<<endl<<endl;
         
-        cout<<"Nom : "<<name<<endl;
-        cout<<"Description : "<<des<<endl;
-        cout<<"Identifiant : "<<ID<<endl;
-        cout<<"Avancement : "<<avan<<endl;
-        cout<<"Statut : "<<status<<endl;
-        cout<<"Priorité : "<<prio<<endl;
+        if(a_st==0){
+            cout<<"-------------- DESCRIPTION DETAILLEE -----------------"<<endl;}
+        cout<<"Nom :              "<<name<<endl;
+        cout<<"Description :      "<<des<<endl;
+        cout<<"Identifiant :      "<<ID<<endl;
+        cout<<"Avancement :       "<<avan<<endl;
+        cout<<"Statut :           "<<status<<endl;
+        cout<<"Priorité :         "<<prio<<endl;
         cout<<"Date de création : "<<dc<<endl;
-        cout<<"Date de fin : "<<df<<endl;
-        cout<<"Commentaires : "<<com<<endl<<endl<<endl;
-        cout<<"      ----      "<<endl;
+        cout<<"Date de fin :      "<<df<<endl;
+        cout<<"Commentaires :     "<<com<<endl;
+        cout<<"      ----------------------------------------      "<<endl;
 
-        /*if (is_st==0){//s'affiche uniquement si l'on a une tache primaire
+        if (a_st==0){ //si ce n'est pas une sous tâche :
             cout<<"\t --- SOUS-TACHES --- "<<endl;
-            cout<<"il y a "<<sth+1<<" sous-tache(s) en cours"<<endl<<endl;
-            for (int i=0;i<sth+1;i++){
-                cout<<endl;
-                cout<<"Sous-tâche "<<i+1<<" : "<<endl;
-                st[i]->afficher();
+            int bo=1;
+            int n;
+            int k;
+            n=tab.size();
+            for (int i=0;i<n;i++){
+                k=tab[i]->st_de(ID); //on regarde si c'est une sous tâche de notre tâche
+                if(k==1){
+                    cout<<endl;
+                    bo=0;
+                    tab[i]->afficher(tab);
+                    }
+                
+                }
+            if (bo==1){
+                    cout<<"pas de sous-tâche"<<endl;}
+            cout<<endl<<endl;
+            
             }
-            cout<<endl<<endl;}*/
-
         }
-        
+       
+    
 
 
     string save(){ //créer une chaine de caractère au bon format pour être sauvegarder dans un fichier texte
         string x;
-        x=name+"\n"+des+"\n"+"\n"+to_string(ID)+"\n"+to_string(a_st)+"\n"+to_string(avan)+"\n"+prio+"\n"+status+"\n"+dc+"\n"+df+"\n"+com+"\n";
+        x=name+"\n"+des+"\n"+"\n"+to_string(ID)+"\n"+to_string(a_st)+"\n"+to_string(ID_st)+"\n"+to_string(avan)+"\n"+prio+"\n"+status+"\n"+dc+"\n"+df+"\n"+com+"\n";
         return x;
     }
     
@@ -149,11 +165,15 @@ class Task{
         }
         else {cout<<"erreur : avancement non modifiée"<<endl;}
         
-    }   
+    }  
+
+    int get_avancement(){
+        return avan;
+    } 
 
     void commentaire (string c){
         com=com+"\n"+c;
-        cout<<"Commentaires : "<<com<<endl;
+        //cout<<"Commentaires : "<<com<<endl;
 
     }
 
@@ -190,6 +210,21 @@ class Task{
         prio=new_prio;
     }
     
+    int st_de(int id){ // est ce que la tâche est sous tache de la tache id
+        if (ID_st==id){
+            return 1;
+        }
+        else{
+            return 0;
+        }
+    }
+    int is_st(){
+        return a_st;
+    }
+
+    void ID_tp(int ID){
+        ID_st=ID;
+    }
 
 
 };
