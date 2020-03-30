@@ -72,22 +72,16 @@ class Editor{
             if(k==0){
                 ID=tab[i]->get_ID();
                 
-                avantp=tab[i]->get_avancement();
+                cout<<i<<" - "<<tab[i]->get_name()<<" : "<<tab[i]->get_avancement()<<"%"<<endl;
                 
-                if(avantp==100){
-
-                    cout<<i<<" - "<<tab[i]->get_name()<<"\t (fait)"<<endl;
-                }
-                else{
-                    cout<<i<<" - "<<tab[i]->get_name()<<endl;
-                }
+                
                 
                 for (int j=0;j<n;j++){
                     if (tab[j]->st_de(ID)){
                         avanst=tab[j]->get_avancement();
                         
                         if(avanst==100){
-                            cout<<"\t - "<<tab[j]->get_name()<<"\t (fait)"<<endl;
+                            cout<<"\t - "<<tab[j]->get_name()<<" (fait)"<<endl;
                         }
                         else{
                             cout<<"\t - "<<tab[j]->get_name()<<endl;
@@ -105,7 +99,7 @@ class Editor{
 
         string reponse;
 
-        //cin.ignore();
+        cin.ignore();
         getline(cin,reponse);
 
         if(reponse=="q" or reponse=="Q"){
@@ -390,20 +384,78 @@ class Editor{
         }
         cout<<"---------------------------------------------"<<endl;
         cout<<"taper le numéro de la tâche pour modifier son avancement"<<endl;
-
+        cout<<"Q/q pour retourner au menu principal"<<endl;
+        
         string res;
-        cin>>res;
+        
+        getline(cin,res);
+        
+        if (res=="q" or res=="Q"){
+            menu_liste();
+        }
         
         valider(res);
     }
 
 
     void valider(string res){
+        
+        int r =stoi(res); //numéro de la tache a valider
+        int id =tab[r]->get_ID();
+        //on crée un vector qui contient la liste des st de la tache 
         vector <int> st;
         int n=tab.size();
         for (int i=0;i<n;i++){
-            
+            if(tab[i]->st_de(id)==1){
+                st.push_back(i);
+            }
         }
+        int m=st.size();
+        
+        if (m!=0){
+            int k;
+            for (int j=0;j<m;j++){
+                k=st[j];//numéro de la sous tache dans tab
+                cout<<j<<" - "<<tab[k]->get_name()<<" : "<<tab[k]->get_avancement()<<"%"<<endl;
+            }
+            cout<<"---------------------------------------------"<<endl;
+            cout<<"pour valider un sous tâche taper son numéro"<<endl;
+            cout<<"q/Q pour quitter"<<endl;
+
+            string res2;
+            
+            getline(cin,res2);
+            if (res2=="q" or res2=="Q"){
+                menu_valider();
+            }
+            int p=stoi(res2);
+            
+            k=st[p];
+            tab[k]->avancement(100);
+
+            int s=0;
+            for (int l=0;l<m;l++){
+                k=st[l];
+                cout<<"k = "<<k<<endl;
+                
+                s=s+tab[k]->get_avancement();
+            }
+            tab[r]->avancement(s/m);
+            menu_valider();
+        }
+
+        cout<<"la tache sélectionnée ne contient pas de sous-tâche, valider la tâche ?"<<endl;
+        cout<<"1 - valider"<<endl<<"2 - annuler"<<endl;
+        string rep;
+        getline(cin,rep);
+        if (rep=="1"){
+            tab[r]->avancement(100);
+            
+            menu_valider();
+        }
+        
+        menu_valider();
+
     }
 
     void menu(){
@@ -418,7 +470,7 @@ class Editor{
 
         if (rep=="1"){
             cout<<"Nom du fichier de sauvegarde"<<endl;
-            cout<<"(au format nom_de_sauvegarde.txt"<<endl;
+            cout<<"(au format nom_de_sauvegarde.txt")<<endl;
             string adresse;
             cin>>adresse;
             adress=adresse;
@@ -469,6 +521,7 @@ class Editor{
             modifier();
         }
         if(rep=="4"){
+            cin.ignore();
             menu_valider();
         }
         if(rep=="5"){

@@ -156,21 +156,16 @@ class Task{
         
     }
 
-
-    void avancement (int s){
-        
-        if (0<=s<=100){
-            avan=s;
-            cout<<"Avancement : "<<avan<<"%"<<endl;
-        }
-        else {cout<<"erreur : avancement non modifiée"<<endl;}
-        
-    }  
-
     int get_avancement(){
         return avan;
     } 
 
+    void avancement (int s){
+        avan=s;       
+        
+    }  
+
+    
     void commentaire (string c){
         com=com+"\n"+c;
         //cout<<"Commentaires : "<<com<<endl;
