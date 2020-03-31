@@ -11,15 +11,15 @@ Il y a 2 classes principales :
 		- un avancement en %
 		- une priorité (normale ou prioritaire)
 
-	On peut appliquer à l'objet différentes méthodes pour le modifier, ajouter des attributs et le sauvegarder. Cependant ces méthodes sont invisbles à l'utilisateur. Toutes les intéractions se font par une interface dans le terminal.
+On peut appliquer à l'objet différentes méthodes pour le modifier, ajouter des attributs et le sauvegarder. Cependant ces méthodes sont invisbles à l'utilisateur. Toutes les intéractions se font par une interface dans le terminal.
 
 	- une classe Editor qui represente la liste des tâches, cet éditeur permet l'affichage des menus, de la liste, et fait appel au module de sauvegarde.
 
 
-Un fichier "save.h" gère les sauvegardes par des lectures/écritures de fichiers .txt grâce à une syntaxe définie au préalable.
+	- Un fichier "save.h" gère les sauvegardes par des lectures/écritures de fichiers .txt grâce à une syntaxe définie au préalable.
 
 
-	Pour l'utilisateur, il faudra uniquement lancer l'éditeur grâce à l'executable. Tout se fait ensuite par navigation dans le terminal à l'aide de menu et de lectures d'entrées au clavier. L'objectif était que l'utilisateur n'ait pas à entrer de fonctions ou de lignes de commande. Le programme est donc peut-être moins rapide pour un utilisateur qui serait habitué mais plus "user-friendly" même si assez rustique on l'admettra.
+Pour l'utilisateur, il faudra uniquement lancer l'éditeur grâce à l'executable. Tout se fait ensuite par navigation dans le terminal à l'aide de menu et de lectures d'entrées au clavier. L'objectif était que l'utilisateur n'ait pas à entrer de fonctions ou de lignes de commande. Le programme est donc peut-être moins rapide pour un utilisateur qui serait habitué mais plus "user-friendly" même si assez rustique on l'admettra.
 
 
 
