@@ -86,19 +86,6 @@ vector<Task*> get_data(string adress){ // lecture d'un fichier de sauvegarde en 
             }
 
 
-        /*cout<<endl<<endl;
-        cout<<"Nom : "<<name<<endl;
-        cout<<"Description : "<<des<<endl;
-        cout<<"Identifiant : "<<ID<<endl;
-        cout<<"Avancement : "<<avan<<endl;
-        cout<<"Statut : "<<status<<endl;
-        cout<<"Priorité : "<<prio<<endl;
-        cout<<"Date de création : "<<dc<<endl;
-        cout<<"Date de fin : "<<df<<endl;
-        cout<<"Commentaires : "<<com<<endl<<endl<<endl;*/
-
-        // forme constructor Task(string n,string datec ,string datef,int s =0,string d="",string p="normale",ID=0)
-        
         Task* t = new Task {name,dc,df,a_st,ID_st,avan,des,prio,ID};
           
         t->commentaire(com);

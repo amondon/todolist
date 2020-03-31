@@ -51,22 +51,7 @@ class Task{
         //cout<<"nouvelle tache ajoutée"<<endl;
         }
 
-    /*Task(const Task& t){ //constructeur de copie (sert pour le cas pù l'on a des sous-tâches, la copie n'est alors pas immédiate)
-        name=t.name;
-        ID=t.ID;
-        dc=t.dc;
-        df=t.df;
-        status=t.status;
-        avan=t.avan;
-        prio=t.prio;
-        com=t.com;
-        a_st=t.a_st;
-        int n=st.size();
-        for (int i=0;i<n;i++){
-            t.st[i]=st[i]
-        }
-
-    }*/
+    
 
     void afficher( vector <Task*> tab){ // affichage d'une tache dans le terminal
         cout<<endl<<endl;
@@ -75,7 +60,6 @@ class Task{
             cout<<"-------------- DESCRIPTION DETAILLEE -----------------"<<endl;}
         cout<<"Nom :              "<<name<<endl;
         cout<<"Description :      "<<des<<endl;
-        //cout<<"Identifiant :      "<<ID<<endl;
         cout<<"Avancement :       "<<avan<<endl;
         cout<<"Statut :           "<<status<<endl;
         cout<<"Priorité :         "<<prio<<endl;
@@ -174,7 +158,7 @@ class Task{
             com=com+"\n"+c;
         }
         
-        //cout<<"Commentaires : "<<com<<endl;
+        
 
     }
 
@@ -185,13 +169,7 @@ class Task{
     string get_name(){
         return name;
     }
-    /*void sous_tache (Task* st1){
-        st.push_back(st1);
-        sth++;
-        cout<<"nouvelle sous_tâche ajoutée"<<endl;
-
-    }*/
-
+    
     void change_name (string new_name){
         name=new_name;
     }
