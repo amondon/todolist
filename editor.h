@@ -99,7 +99,7 @@ class Editor{
 
         string reponse;
 
-        cin.ignore();
+        //cin.ignore();
         getline(cin,reponse);
 
         if(reponse=="q" or reponse=="Q"){
@@ -470,7 +470,7 @@ class Editor{
 
         if (rep=="1"){
             cout<<"Nom du fichier de sauvegarde"<<endl;
-            cout<<"(au format nom_de_sauvegarde.txt")<<endl;
+            cout<<"(au format nom_de_sauvegarde.txt)"<<endl;
             string adresse;
             cin>>adresse;
             adress=adresse;
@@ -513,6 +513,7 @@ class Editor{
             ajout();
         }
         if(rep=="2"){
+            cin.ignore();
             afficher();
             
             menu_liste();
@@ -546,7 +547,7 @@ class Editor{
         cout<<"5 - Description"<<endl;
         cout<<"Q - Menu"<<endl;
 
-        cout<<ntask<<endl;
+        //cout<<ntask<<endl;
 
         string newres;
         int n;
@@ -674,9 +675,13 @@ class Editor{
         for (int i=0;i<n;i++){
             cout<<i+1<<" - "<<tab[i]->get_name()<<endl;
         }
+        cout<<"Q/q - Quitter"<<endl;
         string res;
         cin>>res;
-        
+        if (res=="q" or res=="Q"){
+            
+            menu_liste();
+        }
          //numéro de la tâche à modifier, on la passe en argument de la fonction suivante
         menu_modifier(res);
     }   

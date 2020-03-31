@@ -75,13 +75,13 @@ class Task{
             cout<<"-------------- DESCRIPTION DETAILLEE -----------------"<<endl;}
         cout<<"Nom :              "<<name<<endl;
         cout<<"Description :      "<<des<<endl;
-        cout<<"Identifiant :      "<<ID<<endl;
+        //cout<<"Identifiant :      "<<ID<<endl;
         cout<<"Avancement :       "<<avan<<endl;
         cout<<"Statut :           "<<status<<endl;
         cout<<"Priorité :         "<<prio<<endl;
         cout<<"Date de création : "<<dc<<endl;
         cout<<"Date de fin :      "<<df<<endl;
-        cout<<"Commentaires :     "<<com<<endl;
+        cout<<"Commentaires :     "<<endl<<com<<endl;
         cout<<"      ----------------------------------------      "<<endl;
 
         if (a_st==0){ //si ce n'est pas une sous tâche :
@@ -111,7 +111,7 @@ class Task{
 
     string save(){ //créer une chaine de caractère au bon format pour être sauvegarder dans un fichier texte
         string x;
-        x=name+"\n"+des+"\n"+"\n"+to_string(ID)+"\n"+to_string(a_st)+"\n"+to_string(ID_st)+"\n"+to_string(avan)+"\n"+prio+"\n"+status+"\n"+dc+"\n"+df+"\n"+com+"\n";
+        x=name+"\n"+des+"\n"+"\n"+to_string(ID)+"\n"+to_string(a_st)+"\n"+to_string(ID_st)+"\n"+to_string(avan)+"\n"+prio+"\n"+status+"\n"+dc+"\n"+df+"\n"+"\n"+com+"\n";
         return x;
     }
     
@@ -167,7 +167,13 @@ class Task{
 
     
     void commentaire (string c){
-        com=com+"\n"+c;
+        if(com==""){
+            com=c;
+        }
+        else{
+            com=com+"\n"+c;
+        }
+        
         //cout<<"Commentaires : "<<com<<endl;
 
     }

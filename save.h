@@ -76,10 +76,13 @@ vector<Task*> get_data(string adress){ // lecture d'un fichier de sauvegarde en 
         com+=ligne;
 
         getline(data,ligne);
+        com+=ligne;
+        getline(data,ligne);
         while(ligne!=""){
             com+="\n -";
             com+=ligne;
             getline(data,ligne);
+            
             }
 
 
